@@ -1,8 +1,9 @@
-# Sitecore.Strategy.Sanitizer
+# Data generator and sanitizer
 Library to facilitate generating random values and working with randomly generated values
 * **Generators** are used to "generate" a random value based on certain parameters.
 * **Sanitizers** are used to replace values consistently. Consider a requirement where you must replace all names in a database with randomly generated names. In order for the data to continue to make sense names must be replaced consistently. For example, if the name *Adam Conn* is replaced with *Santos Figeroa*, all occurrences of *Adam Conn* must be replaced with *Santos Figeroa*. A sanitizer is used to handle this.
 * **Other types** are... well... other types that support generators and sanitizers and may be useful to you.
+
 ## Generator: `IpAddressGenerator`
 This type generates a `System.Net.IPAddress` object with a random IP address within a specified range.
 
