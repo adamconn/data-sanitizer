@@ -15,7 +15,7 @@ namespace Sitecore.Strategy.Sanitizer.Generators
         public abstract TTarget NextValue();
 
         protected Random Random { get; private set; }
-        protected IEnumerable<TSource> Values { get; set; }
+        protected IList<TSource> Values { get; set; }
 
         public virtual void AddValues(params TSource[] values)
         {
@@ -29,7 +29,7 @@ namespace Sitecore.Strategy.Sanitizer.Generators
             }
             else
             {
-                this.Values = this.Values.Concat(values);
+                this.Values = this.Values.Concat(values).ToList();
             }
         }
 
@@ -39,7 +39,7 @@ namespace Sitecore.Strategy.Sanitizer.Generators
             {
                 return;
             }
-            this.Values = this.Values.Except(values);
+            this.Values = this.Values.Except(values).ToList();
         }
     }
 }

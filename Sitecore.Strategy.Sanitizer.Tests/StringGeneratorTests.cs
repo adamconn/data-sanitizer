@@ -12,12 +12,6 @@ namespace Sitecore.Strategy.Sanitizer.Tests
         public static string[] FIRST_NAMES_1 = new string[] { "Adam", "Brian", "Charles", "David", "Eric", "Fred", "George", "Henry", "Ian", "Jeff", "Keith" };
         public static string[] FIRST_NAMES_2 = new string[] { "Ann", "Beth", "Christine", "Danielle", "Erin", "Fanny", "Gina", "Henrietta", "Iris", "Jennnifer", "Kelley" };
 
-        public void Test()
-        {
-            var places = new string[] {"Seattle", "Portland", "San Francisco", "Los Angeles", "San Diego"};
-            var generator = new StringGenerator();
-            var randomPlace = generator.NextValue();
-        }
         [TestMethod]
         public void StringGeneratorTest()
         {

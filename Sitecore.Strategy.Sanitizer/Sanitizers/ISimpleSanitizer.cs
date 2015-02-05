@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sitecore.Strategy.Sanitizer.Sanitizers
 {
-    public interface ISanitizer
+    public interface ISimpleSanitizer<T> : ISanitizer
     {
-        bool EnsureUniqueValues { get; }
-        int RetryLimit { get; }
-        void Reset();
+        T Sanitize(T input);
+        Func<T, bool> ShouldSanitize { get; set; }
     }
 }
