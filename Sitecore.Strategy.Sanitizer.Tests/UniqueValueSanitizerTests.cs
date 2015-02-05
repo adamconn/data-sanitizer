@@ -15,24 +15,24 @@ namespace Sitecore.Strategy.Sanitizer.Tests
         [TestMethod]
         public void SanitizeTest()
         {
-            var mock = new Mock<IGenerator<Guid, string>>();
+            var mock = new Mock<IGenerator<string, string>>();
             mock.Setup(generator => generator.NextValue()).Returns("aaa");
-            var sanitizer = new UniqueValueSanitizer<Guid, string>(mock.Object);
-            var val = sanitizer.Sanitize(Guid.NewGuid(), null);
+            var sanitizer = new UniqueValueSanitizer<string, string>(mock.Object);
+            var val = sanitizer.Sanitize("bbb");
+            Assert.AreEqual("aaa", val);
+            val = sanitizer.Sanitize("bbb");
             Assert.AreEqual("aaa", val);
         }
 
         [TestMethod]
         public void ResetTest()
         {
-            var mock = new Mock<IGenerator<Guid, string>>();
+            var mock = new Mock<IGenerator<string, string>>();
             mock.Setup(generator => generator.NextValue()).Returns("aaa");
-            var sanitizer = new UniqueValueSanitizer<Guid, string>(mock.Object);
-            var guid1 = Guid.NewGuid();
-            var guid2 = Guid.NewGuid();
-            var val1 = sanitizer.Sanitize(guid1, null);
+            var sanitizer = new UniqueValueSanitizer<string, string>(mock.Object);
+            var val1 = sanitizer.Sanitize("bbb");
             sanitizer.Reset();
-            var val2 = sanitizer.Sanitize(guid2, null);
+            var val2 = sanitizer.Sanitize("ccc");
             Assert.AreEqual("aaa", val1);
             Assert.AreEqual("aaa", val2);
         }
@@ -41,12 +41,12 @@ namespace Sitecore.Strategy.Sanitizer.Tests
         [ExpectedException(typeof(SanitizerRetryException))]
         public void RetryFailTest()
         {
-            var mock = new Mock<IGenerator<Guid, string>>();
+            var mock = new Mock<IGenerator<string, string>>();
             mock.Setup(generator => generator.NextValue()).Returns("aaa");
-            var sanitizer = new UniqueValueSanitizer<Guid, string>(mock.Object);
+            var sanitizer = new UniqueValueSanitizer<string, string>(mock.Object);
             sanitizer.RetryLimit = 1;
-            var val1 = sanitizer.Sanitize(Guid.NewGuid(), null);
-            var val2 = sanitizer.Sanitize(Guid.NewGuid(), null);
+            var val1 = sanitizer.Sanitize("bbb");
+            var val2 = sanitizer.Sanitize("ccc");
         }
     }
 }

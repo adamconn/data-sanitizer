@@ -39,14 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generators\BaseDictionaryGenerator.cs" />
     <Compile Include="Generators\BaseGenerator.cs" />
     <Compile Include="Generators\IGenerator.cs" />
-    <Compile Include="Generators\Text\CompoundValuesGeneratorContext.cs" />
-    <Compile Include="Generators\Text\CompoundValuesGenerator.cs" />
     <Compile Include="Matchers\IMatcher.cs" />
-    <Compile Include="Sanitizers\IKeyedSanitizer.cs" />
-    <Compile Include="Sanitizers\ISimpleSanitizer.cs" />
     <Compile Include="Sanitizers\LocationSanitizer.cs" />
     <Compile Include="Generators\Net\IpAddressGenerator.cs" />
     <Compile Include="Generators\Net\IpAddressRange.cs" />

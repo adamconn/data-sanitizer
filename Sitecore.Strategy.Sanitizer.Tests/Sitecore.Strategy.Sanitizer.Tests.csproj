@@ -61,7 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringGeneratorTests.cs" />
     <Compile Include="UniqueValueSanitizerTests.cs" />
-    <Compile Include="CompoundValuesGeneratorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sitecore.Strategy.Sanitizer\Sitecore.Strategy.Sanitizer.csproj">

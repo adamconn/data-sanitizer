@@ -28,7 +28,7 @@ namespace Sitecore.Strategy.Sanitizer.Tests
             var locBefore = new Location();
             var sanitizer = new LocationSanitizer();
             var locAfter = sanitizer.Sanitize(locBefore);
-            Assert.AreSame(locBefore, locAfter);
+            Assert.IsNull(locAfter);
         }
 
         [TestMethod]
@@ -54,11 +54,9 @@ namespace Sitecore.Strategy.Sanitizer.Tests
             mock.Setup(loc => loc.Condition).Returns(loc => false);
             var sanitizer = new LocationSanitizer();
             sanitizer.DataSources.Add(mock.Object, new Location[] {});
-            var locBefore = new Location();
-            var locAfter = sanitizer.Sanitize(locBefore);
-            Assert.AreSame(locBefore, locAfter);
+            var locAfter = sanitizer.Sanitize(new Location());
+            Assert.IsNull(locAfter);
         }
-
         [TestMethod]
         public void TwoMatchers()
         {
@@ -75,13 +73,10 @@ namespace Sitecore.Strategy.Sanitizer.Tests
             var cityCa = new Location() { Country = "CA", City = "Toronto" };
             sanitizer.DataSources.Add(mockUs.Object, new Location[] { cityUs });
             sanitizer.DataSources.Add(mockCa.Object, new Location[] { cityCa });
-            var locBefore1 = new Location();
-            var locBefore2 = new Location() {Country = "US"};
-            var locBefore3 = new Location() {Country = "CA"};
-            var locAfter1 = sanitizer.Sanitize(locBefore1);
-            var locAfter2 = sanitizer.Sanitize(locBefore2);
-            var locAfter3 = sanitizer.Sanitize(locBefore3);
-            Assert.AreSame(locBefore1, locAfter1);
+            var locAfter1 = sanitizer.Sanitize(new Location());
+            var locAfter2 = sanitizer.Sanitize(new Location() { Country = "US" });
+            var locAfter3 = sanitizer.Sanitize(new Location() { Country = "CA" });
+            Assert.IsNull(locAfter1);
             Assert.AreSame(cityUs, locAfter2);
             Assert.AreSame(cityCa, locAfter3);
         }

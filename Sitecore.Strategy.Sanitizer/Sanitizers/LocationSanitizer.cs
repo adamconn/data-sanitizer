@@ -9,7 +9,7 @@ using Sitecore.Strategy.Sanitizer.Models;
 
 namespace Sitecore.Strategy.Sanitizer.Sanitizers
 {
-    public class LocationSanitizer : ISimpleSanitizer<Location>
+    public class LocationSanitizer : ISanitizer<Location>
     {
         public LocationSanitizer()
         {
@@ -17,24 +17,25 @@ namespace Sitecore.Strategy.Sanitizer.Sanitizers
         }
         public Func<Location, bool> ShouldSanitize { get; set; }
         public IDictionary<IMatcher<Location>, IEnumerable<Location>> DataSources { get; private set; }
-        public Location Sanitize(Location location)
+        public Location Sanitize(Location value)
         {
-            if (location == null)
+            if (value == null)
             {
                 throw new ArgumentNullException("value");
             }
-            if (this.ShouldSanitize == null || this.ShouldSanitize(location))
+            if (this.ShouldSanitize != null && !this.ShouldSanitize(value))
             {
-                foreach (var matcher in this.DataSources.Keys)
+                return value;
+            }
+            foreach (var matcher in this.DataSources.Keys)
+            {
+                if (matcher.Condition(value))
                 {
-                    if (matcher.Condition(location))
-                    {
-                        var locations = this.DataSources[matcher];
-                        return matcher.Action(location, locations);
-                    }
+                    var locations = this.DataSources[matcher];
+                    return matcher.Action(value, locations);
                 }
             }
-            return location;
+            return null;
         }
 
         public bool EnsureUniqueValues

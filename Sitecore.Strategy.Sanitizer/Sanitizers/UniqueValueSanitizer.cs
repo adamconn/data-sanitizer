@@ -7,38 +7,37 @@ using Sitecore.Strategy.Sanitizer.Generators;
 
 namespace Sitecore.Strategy.Sanitizer.Sanitizers
 {
-    public class UniqueValueSanitizer<TInput, TOutput> : IKeyedSanitizer<TInput, TOutput>
+    public class UniqueValueSanitizer<TSource, TValue> : ISanitizer<TValue>
     {
-        public UniqueValueSanitizer(IGenerator<TInput, TOutput> generator)
+        public UniqueValueSanitizer(IGenerator<TSource, TValue> generator)
         {
             this.Generator = generator;
-            this.UsedValues = new Dictionary<TInput, TOutput>();
+            this.UsedValues = new Dictionary<TValue, TValue>();
             this.RetryLimit = 100;
         }
-        protected IGenerator<TInput, TOutput> Generator { get; private set; }
-        protected IDictionary<TInput, TOutput> UsedValues { get; private set; }
+        protected IGenerator<TSource, TValue> Generator { get; private set; }
+        protected IDictionary<TValue, TValue> UsedValues { get; private set; }
+        public Func<TValue, bool> ShouldSanitize { get; set; }
 
-        public Func<TInput, bool> ShouldSanitize { get; set; }
-
-        public virtual TOutput Sanitize(TInput inputValue, TOutput defaultValue)
+        public virtual TValue Sanitize(TValue value)
         {
-            if (this.ShouldSanitize != null && !this.ShouldSanitize(inputValue))
+            if (this.ShouldSanitize != null && !this.ShouldSanitize(value))
             {
-                return defaultValue;
+                return value;
             }
-            if (this.UsedValues.ContainsKey(inputValue))
+            if (this.UsedValues.ContainsKey(value))
             {
-                return this.UsedValues[inputValue];
+                return this.UsedValues[value];
             }
             var limit = this.RetryLimit;
             while (limit > 0)
             {
                 limit--;
-                var newValue = this.Generator.NextValue();
-                if (!this.UsedValues.Any(p => p.Value.Equals(newValue)))
+                var address = this.Generator.NextValue();
+                if (!this.UsedValues.Any(p => p.Value.Equals(address)))
                 {
-                    this.UsedValues.Add(inputValue, newValue);
-                    return newValue;
+                    this.UsedValues.Add(value, address);
+                    return address;
                 }
             }
             throw new SanitizerRetryException(this.RetryLimit);
