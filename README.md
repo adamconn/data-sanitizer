@@ -92,6 +92,23 @@ generator.AddValues(sources.ToArray());
 var fullName = generator.NextValue();  
 ```
 
+### Formatting values to generate an email address
+
+The following code demonstrates how to use the `ComponentStringGenerator` to generate an email address by combining the first letter of the first name (given name) with the last name (surname) and making all characters lower-case:
+
+```
+var context = new CompoundStringGeneratorContext();
+context.Formats.Add("{first}{last}@email.com");
+context.ValueFormatters.Add("first", s => s.Substring(0, 1).ToLower());
+context.ValueFormatters.Add("last", s => s.ToLower());
+var generator = new CompoundStringGenerator(context);
+var sources = new Dictionary<string, IEnumerable<string>>();
+sources["first"] = new string[] { "Ann", "Catherine" };
+sources["last"] = new string[] { "Johnson", "Smith" }; 
+generator.AddValues(sources.ToArray());
+var emailAddress = generator.NextValue();
+```
+
 ## Sanitizer: UniqueValueSanitizer
 
 This type, given an object, retrieves a randomly selected object of the same type.
